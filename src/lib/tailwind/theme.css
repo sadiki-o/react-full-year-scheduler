@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Set the scrollbar width and color */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+
+/* Set the scrollbar thumb color */
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+}
+
+/* Set the scrollbar corner color (Firefox) */
+::-webkit-scrollbar-corner {
+  background-color: #f5f5f5;
+}
+
+/* Set the scrollbar track color (Firefox) */
+::-moz-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+/* Set the scrollbar thumb color (Firefox) */
+::-moz-scrollbar-thumb {
+  background-color: #ccc;
+}
+
+/* Set the scrollbar corner color (Firefox) */
+::-moz-scrollbar-corner {
+  background-color: #f5f5f5;
+}
+
+/* Set the scrollbar width and color (IE/Edge) */
+/* Note: This is only supported in Internet Explorer and Edge */
+/*       Other browsers will ignore this rule */
+*::-ms-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+
+/* Set the scrollbar thumb color (IE/Edge) */
+/* Note: This is only supported in Internet Explorer and Edge */
+/*       Other browsers will ignore this rule */
+*::-ms-scrollbar-thumb {
+  background-color: #ccc;
+}
+
+.year-switcher {
+  position: relative;
+}
+
+.year-switcher .left-button {
+  position: fixed;
+  height: 50px;
+  width: 60px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: large;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 1px;
+  left: 0;
+}
+.year-switcher .right-button {
+  position: fixed;
+  height: 50px;
+  width: 60px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: large;
+  border-top-left-radius: 1px;
+  border-bottom-left-radius: 1px;
+  right: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+tr > .month-name-cell:hover > .week-day-cell {
+  background-color: aqua;
+}

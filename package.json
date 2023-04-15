@@ -1,0 +1,92 @@
+{
+  "name": "react-full-year-scheduler",
+  "description": "React Year Scheduler is a customizable and easy-to-use React component that allows you to display a year calendar with events, and enable users to select and interact with them. ",
+  "private": false,
+  "version": "1.0.12",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sadiki-o/react-full-year-scheduler"
+  },
+  "author": "Oussama Sadiki oussam.sadiki@gmail.com",
+  "bugs": {
+    "url": "https://github.com/sadiki-o/react-full-year-scheduler/issues"
+  },
+  "homepage": "https://github.com/sadiki-o/react-full-year-scheduler#readme",
+  "license": "MIT",
+  "main": "./dist/react-full-year-scheduler.umd.js",
+  "module": "./dist/react-full-year-scheduler.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/react-full-year-scheduler.es.js",
+      "require": "./dist/react-full-year-scheduler.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
+    "test": "echo 'test run'",
+    "format:prettier": "prettier --write \"src/**/*.{ts,tsx,js,mdx}\"",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@tippyjs/react": "^4.2.6",
+    "dayjs": "^1.11.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "peerDependencies": {
+    "dayjs": "^1.11.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "@vitejs/plugin-react": "^3.1.0",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "postcss": "^8.4.21",
+    "prettier": "^2.8.7",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0",
+    "vite-plugin-dts": "^2.2.0",
+    "vite-plugin-linter": "^2.0.2",
+    "vite-tsconfig-paths": "^4.0.8",
+    "vitest": "^0.30.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "prettier -w"
+    ]
+  },
+  "keywords": [
+    "calendar",
+    "full-year-calendar",
+    "react-calendar",
+    "react-scheduler",
+    "events-scheduler",
+    "react-full-year-scheduler"
+  ]
+}
