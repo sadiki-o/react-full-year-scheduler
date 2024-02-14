@@ -1,5 +1,5 @@
-import { createContext } from 'react'
+import {createContext} from 'react';
 
-import { IReactFullYearSchedulerContext } from './../utils/interfaces'
+import type {IReactFullYearSchedulerContext} from './../utils/interfaces';
 
-export const CalendarContext = createContext<IReactFullYearSchedulerContext | null>(null)
+export const CalendarContext = createContext<IReactFullYearSchedulerContext | null>(null);

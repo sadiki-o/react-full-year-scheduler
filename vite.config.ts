@@ -1,48 +1,48 @@
-import react from '@vitejs/plugin-react'
-import path from 'node:path'
-import { defineConfig } from 'vitest/config'
-import dts from 'vite-plugin-dts'
-import tailwindcss from 'tailwindcss'
-import { UserConfigExport } from 'vite'
-import { name } from './package.json'
+/* eslint-disable import/no-extraneous-dependencies */
+import { resolve } from "path";
 
-const app = async (): Promise<UserConfigExport> => {
-  return defineConfig({
-    plugins: [
-      react(),
-      dts({
-        insertTypesEntry: true,
-      }),
-    ],
-    css: {
-      postcss: {
-        plugins: [tailwindcss],
-      },
-    },
-    build: {
-      lib: {
-        entry: path.resolve(__dirname, 'src/lib/index.ts'),
-        name,
-        formats: ['es', 'umd'],
-        fileName: (format) => `${name}.${format}.js`,
-      },
-      rollupOptions: {
-        external: ['react', 'react-dom', 'tailwindcss', 'dayjs'],
-        output: {
-          globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            tailwindcss: 'tailwindcss',
-            dayjs: 'dayjs',
-          },
-        },
-      },
-    },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-    },
-  })
-}
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import hq from "alias-hq";
+import dts from "vite-plugin-dts";
+import postcssPresetEnv from "postcss-preset-env";
+import tailwindcss from "tailwindcss";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+
 // https://vitejs.dev/config/
-export default app
+export default defineConfig({
+    resolve: {
+        alias: hq.get("rollup"),
+    },
+    plugins: [
+        cssInjectedByJsPlugin(),
+        react(),
+        dts({ insertTypesEntry: true, rollupTypes: true, exclude: ["src/demo"] }),
+    ],
+    build: {
+        sourcemap: true,
+        lib: {
+            // Could also be a dictionary or array of multiple entry points
+            entry: resolve(__dirname, "src/lib/index.ts"),
+            name: "react-full-year-scheduler",
+            // the proper extensions will be added
+            fileName: "index",
+        },
+        rollupOptions: {
+            external: ["react", "react-dom", "tailwindcss", "dayjs"],
+            output: {
+                globals: {
+                    react: "React",
+                    "react-dom": "ReactDOM",
+                    tailwindcss: "tailwindcss",
+                    dayjs: "dayjs",
+                },
+            },
+        },
+    },
+    css: {
+        postcss: {
+            plugins: [postcssPresetEnv({}), tailwindcss],
+        },
+    },
+});
