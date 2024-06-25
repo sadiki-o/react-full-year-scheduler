@@ -2,7 +2,7 @@
   "name": "react-full-year-scheduler",
   "description": "React Year Scheduler is a customizable and easy-to-use React component that allows you to display a year calendar with events, and enable users to select and interact with them. ",
   "private": false,
-  "version": "1.1.11",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sadiki-o/react-full-year-scheduler"
