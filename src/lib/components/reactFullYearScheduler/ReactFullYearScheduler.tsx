@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/prop-types */
 import type {Dayjs} from 'dayjs';
 import dayjs from 'dayjs';
@@ -7,14 +8,15 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import type {FC} from 'react';
 import {memo, useCallback, useEffect, useState} from 'react';
 
-import {CalendarContext} from '../../context/context';
+import Loader from '@/components/loader/Loader';
+import {MonthRow} from '@/components/monthRow/MonthRow';
+import WeekDayCell from '@/components/weekDayCell/WeekDayCell';
+import YearSwitcher from '@/components/yearSwitcher/YearSwitcher';
+import {CalendarContext} from '@/lib/context/context';
+import type {TDay} from '@/lib/utils/types';
+import type {IReactFullYearScheduler} from '@/lib/utils/interfaces';
+
 import {dayNamesStartingWithMonday, dayNamesStartingWithSunday, defaultVariables, locales} from '../../utils/helpers';
-import type {IReactFullYearScheduler} from '../../utils/interfaces';
-import type {TDay} from '../../utils/types';
-import Loader from '../loader/Loader';
-import {MonthRow} from '../monthRow/MonthRow';
-import WeekDayCell from '../weekDayCell/WeekDayCell';
-import YearSwitcher from '../yearSwitcher/YearSwitcher';
 import '../../tailwind/theme.css';
 
 // enable dayjs plugins
@@ -41,9 +43,11 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     maxRangeSelection,
     minRangeSelection,
     firstDayOfWeek,
+    customWeekend,
     events,
     maxYear,
     minYear,
+    defaultYearToLoad,
     showWeekSeparator,
     showTodayButton,
     minCellWidth,
@@ -56,12 +60,16 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     onEventSinglePickInterception,
     onRangePick,
     onEventRangePickInterception,
+    onRangeSelectionError,
 }) {
     const [showCal, setShowCal] = useState(false);
     // each array represents a month with all its corresponding days
     const [monthsWithDates, setMonthsWithDates] = useState<TDay[][]>([]);
     // current year the calendar is displaying
-    const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
+    const [selectedYear, setSelectedYear] = useState<number>(
+        (defaultYearToLoad && defaultYearToLoad <= maxYear && defaultYearToLoad >= minYear && defaultYearToLoad) ??
+            dayjs().year()
+    );
 
     const [firstSelectedCell, setFirstSelectedCell] = useState<Dayjs | undefined>();
     const [secondSelectedCell, setSecondSelectedCell] = useState<Dayjs | undefined>();
@@ -178,6 +186,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
             value={{
                 events: events ?? [],
                 firstDayOfWeek: firstDayOfWeek ?? 'Monday', // setting default values
+                customWeekend: customWeekend ?? [5, 6],
                 firstSelectedCell,
                 secondSelectedCell,
                 virtualSecondSelectedCell,
@@ -216,6 +225,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
                 onEventSinglePickInterception,
                 onRangePick,
                 onEventRangePickInterception,
+                onRangeSelectionError,
             }}>
             <YearSwitcher
                 min={minYear ?? dayjs().year() - 20}
@@ -273,6 +283,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
                                 .map((_el, index) => (
                                     <MonthRow
                                         key={index}
+                                        customWeekend={customWeekend ?? [5, 6]}
                                         year={selectedYear}
                                         monthDays={monthsWithDates[index].sort(
                                             (a, b) => a.date.valueOf() - b.date.valueOf()

@@ -33,7 +33,7 @@ const App = () => {
         <div className="w-[1400px] mx-auto mt-10">
             <ReactFullYearScheduler
                 events={events}
-                locale="en"
+                locale="fr"
                 dateTooltipTheme="material"
                 weekSeparatorWidth={10}
                 weekSeparatorColor="white"
@@ -48,13 +48,15 @@ const App = () => {
                 maxRangeSelection={50}
                 minRangeSelection={5}
                 firstDayOfWeek="Monday"
+                customWeekend={[4, 5]}
                 maxYear={2030}
                 minYear={1970}
+                defaultYearToLoad={2023}
                 readonlyCalendar={false}
                 showWeekSeparator={false}
                 showTodayButton={true}
                 enableYearToYearSelection={true}
-                enableWeekendSelection={true}
+                enableWeekendSelection={false}
                 minCellWidth={30}
                 showSeparatorInHeader={false}
                 enableEventOverwriting={true}
@@ -75,6 +77,9 @@ const App = () => {
                     clearSecondSelectedCell,
                     clearSelection,
                 ) => {}}
+                onRangeSelectionError={(high, low) => {
+                    console.log(high, low)
+                }}
             />
         </div>
     );

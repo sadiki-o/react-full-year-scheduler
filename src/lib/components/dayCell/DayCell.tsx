@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
@@ -8,8 +9,8 @@ import type {Dayjs} from 'dayjs';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 
-import {CalendarContext} from '../../context/context';
-import type {TDayCell} from '../../utils/types';
+import type {TDayCell} from '@/lib/utils/types';
+import {CalendarContext} from '@/lib/context/context';
 
 const DayCell: FC<TDayCell> = ({
     isEmpty,
@@ -53,6 +54,7 @@ const DayCell: FC<TDayCell> = ({
         onEventSinglePickInterception,
         onRangePick,
         onEventRangePickInterception,
+        onRangeSelectionError,
     } = useContext(CalendarContext)!;
 
     // cell date is within first and second selected cell
@@ -80,14 +82,29 @@ const DayCell: FC<TDayCell> = ({
         secondSelectedCell &&
         (secondSelectedCell?.isSame(date) || virtualSecondSelectedCell?.isSame(date)) &&
         firstSelectedCell?.isBefore(secondSelectedCell);
+
     const isBetweenMaxAndMinSelectionRange = (range: number) => {
-        // decide wether range(first/second selected cells) is between max and min range selection
-        return (
-            (maxRangeSelection && minRangeSelection && range! <= maxRangeSelection && range! >= minRangeSelection) ||
-            (maxRangeSelection && !minRangeSelection && range! <= maxRangeSelection) ||
-            (minRangeSelection && !maxRangeSelection && range! >= minRangeSelection) ||
-            (!minRangeSelection && !maxRangeSelection)
-        );
+        let isBetween = true;
+        let exceedsMax = false;
+        let fallsBelowMin = false;
+
+        if (maxRangeSelection) {
+            isBetween = range <= maxRangeSelection;
+            exceedsMax = !isBetween;
+
+            if (exceedsMax && onRangeSelectionError) onRangeSelectionError(true, false);
+
+            if (!isBetween) return isBetween;
+        }
+
+        if (minRangeSelection) {
+            isBetween = range >= minRangeSelection;
+            fallsBelowMin = !isBetween;
+
+            if (fallsBelowMin && onRangeSelectionError) onRangeSelectionError(false, true);
+        }
+
+        return isBetween;
     };
 
     // decide wether the selection range is overwiting any event
@@ -146,7 +163,7 @@ const DayCell: FC<TDayCell> = ({
                 if (eventIndex !== undefined && onEventSinglePickInterception) {
                     onEventSinglePickInterception(date!, eventIndex!, clearSelection?.clearFirstCell!);
                 } else {
-                    onDatePick && onDatePick(date!, clearSelection?.clearFirstCell!);
+                    onDatePick?.(date!, clearSelection?.clearFirstCell!);
                 }
             } else if (!secondSelectedCell) {
                 // if second cell is before first one switch them
@@ -172,13 +189,12 @@ const DayCell: FC<TDayCell> = ({
                                 );
                             } else {
                                 // trigger on range pick event
-                                onRangePick &&
-                                    onRangePick(
-                                        date!,
-                                        firstSelectedCell!,
-                                        clearSelection?.clearSecondCell!,
-                                        clearSelection?.clearSelection!
-                                    );
+                                onRangePick?.(
+                                    date!,
+                                    firstSelectedCell!,
+                                    clearSelection?.clearSecondCell!,
+                                    clearSelection?.clearSelection!
+                                );
                             }
                         }
                     }
@@ -204,13 +220,12 @@ const DayCell: FC<TDayCell> = ({
                                 );
                             } else {
                                 // trigger on range pick event
-                                onRangePick &&
-                                    onRangePick(
-                                        firstSelectedCell,
-                                        date!,
-                                        clearSelection?.clearSecondCell!,
-                                        clearSelection?.clearSelection!
-                                    );
+                                onRangePick?.(
+                                    firstSelectedCell,
+                                    date!,
+                                    clearSelection?.clearSecondCell!,
+                                    clearSelection?.clearSelection!
+                                );
                             }
                         }
                     }
@@ -224,7 +239,7 @@ const DayCell: FC<TDayCell> = ({
                     onEventSinglePickInterception(date!, eventIndex!, clearSelection?.clearFirstCell!);
                 } else {
                     // trigger on date pick event
-                    onDatePick && onDatePick(date!, clearSelection?.clearFirstCell!);
+                    onDatePick?.(date!, clearSelection?.clearFirstCell!);
                 }
             }
         }
