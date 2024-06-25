@@ -111,5 +111,14 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css}": [
+      "npm run clean:lib",
+      "npm run lint:code",
+      "npm run lint:types",
+      "npm run lint:style",
+      "git add"
+    ]
   }
 }

@@ -1,8 +1,8 @@
 import type {FC} from 'react';
 import {useContext, useEffect} from 'react';
 
-import {CalendarContext} from '../../context/context';
-import type {IYearSwitcher} from '../../utils/interfaces';
+import {CalendarContext} from '@/lib/context/context';
+import type {IYearSwitcher} from '@/lib/utils/interfaces';
 
 const YearSwitcher: FC<IYearSwitcher> = ({min, max, selectedYear, setSelectedYear}) => {
     const {headerWeekendBgColor} = useContext(CalendarContext)!;

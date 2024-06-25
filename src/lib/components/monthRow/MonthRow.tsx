@@ -2,10 +2,11 @@ import dayjs from 'dayjs';
 import type {FC} from 'react';
 import {useContext} from 'react';
 
-import {CalendarContext} from '../../context/context';
-import {dayNamesStartingWithMonday, dayNamesStartingWithSunday} from '../../utils/helpers';
-import type {IMonthRowProps} from '../../utils/interfaces';
-import DayCell from '../dayCell/DayCell';
+import {CalendarContext} from '@/lib/context/context';
+import type {IMonthRowProps} from '@/lib/utils/interfaces';
+import {dayNamesStartingWithMonday, dayNamesStartingWithSunday} from '@/lib/utils/helpers';
+1;
+import DayCell from '@/components/dayCell/DayCell';
 
 // cell containing month name
 export const MonthNameCell = ({monthName}: {monthName: string}) => {
@@ -24,7 +25,7 @@ export const MonthNameCell = ({monthName}: {monthName: string}) => {
 };
 
 // display a row containing the days of a specific month
-export const MonthRow: FC<IMonthRowProps> = ({year, monthDays, monthIndex, firstDayOfWeek}) => {
+export const MonthRow: FC<IMonthRowProps> = ({customWeekend, year, monthDays, monthIndex, firstDayOfWeek}) => {
     return (
         <tr>
             {/* display month name as first cell in the row */}
@@ -43,7 +44,11 @@ export const MonthRow: FC<IMonthRowProps> = ({year, monthDays, monthIndex, first
                               rowCellIndex={index}
                               weekDayIndex={index % 7}
                               dayName={dayNamesStartingWithSunday[index % 7]}
-                              isWeekend={index % 7 === 0 || index % 7 === 6 ? true : false}
+                              isWeekend={
+                                  index % 7 === customWeekend[0] + 1 || index % 7 === customWeekend[1] + 1
+                                      ? true
+                                      : false
+                              }
                               eventIndex={monthDays[dayIndex]?.eventIndex}
                               eventName={monthDays[dayIndex]?.eventName}
                               eventBgColor={monthDays[dayIndex]?.eventBgColor}
@@ -73,7 +78,9 @@ export const MonthRow: FC<IMonthRowProps> = ({year, monthDays, monthIndex, first
                               rowCellIndex={index}
                               weekDayIndex={index % 7}
                               dayName={dayNamesStartingWithMonday[index % 7]}
-                              isWeekend={index % 7 === 5 || index % 7 === 6 ? true : false}
+                              isWeekend={
+                                  index % 7 === customWeekend[0] || index % 7 === customWeekend[1] ? true : false
+                              }
                               eventName={monthDays[index - preventOutOfRangeWeekIndex]?.eventName}
                               eventBgColor={monthDays[index - preventOutOfRangeWeekIndex]?.eventBgColor}
                               eventTextColor={monthDays[index - preventOutOfRangeWeekIndex]?.eventTextColor}

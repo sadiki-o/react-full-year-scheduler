@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 
-import {CalendarContext} from '../../context/context';
+import {CalendarContext} from '@/lib/context/context';
 
 type IWeekDayCellProps = {
     index: number;
@@ -8,10 +8,21 @@ type IWeekDayCellProps = {
     englishDayName: string;
 };
 
+const DaysEnum = {
+    0: 'MONDAY ',
+    1: 'TUESDAY ',
+    2: 'WEDNESDAY ',
+    3: 'THURSDAY ',
+    4: 'FRIDAY ',
+    5: 'SATURDAY ',
+    6: 'SUNDAY ',
+};
+
 // week day cell
 const WeekDayCell = ({index, dayName, englishDayName}: IWeekDayCellProps) => {
     const {
         firstDayOfWeek,
+        customWeekend,
         showWeekSeparator,
         weekSeparatorColor,
         weekSeparatorWidth,
@@ -22,11 +33,14 @@ const WeekDayCell = ({index, dayName, englishDayName}: IWeekDayCellProps) => {
         headerTextColor,
     } = useContext(CalendarContext)!;
 
+    const firstWeekendDay = DaysEnum[customWeekend![0]];
+    const secondWeekendDay = DaysEnum[customWeekend![1]];
+
     const isStartOfWeek =
         firstDayOfWeek &&
         index !== 0 &&
-        ((firstDayOfWeek === 'Sunday' && englishDayName === 'Sunday') ||
-            (firstDayOfWeek === 'Monday' && englishDayName === 'Monday'));
+        ((firstDayOfWeek === firstWeekendDay && englishDayName === firstWeekendDay) ||
+            (firstDayOfWeek === secondWeekendDay && englishDayName === secondWeekendDay));
 
     return (
         <th
@@ -37,14 +51,14 @@ const WeekDayCell = ({index, dayName, englishDayName}: IWeekDayCellProps) => {
                         borderLeftWidth: weekSeparatorWidth,
                         borderLeftColor: showSeparatorInHeader ? weekSeparatorColor : headerWeekendBgColor,
                     }),
-                ...(englishDayName === 'Sunday' || englishDayName === 'Saturday'
+                ...(englishDayName === firstWeekendDay || englishDayName === secondWeekendDay
                     ? {
                           backgroundColor: headerWeekendBgColor,
                       }
                     : {
                           backgroundColor: headerWeekDayBgColor,
                       }),
-                ...(englishDayName === 'Saturday' || englishDayName === 'Sunday'
+                ...(englishDayName === firstWeekendDay || englishDayName === secondWeekendDay
                     ? {borderBottom: '1px solid white'}
                     : null),
                 color: headerTextColor,

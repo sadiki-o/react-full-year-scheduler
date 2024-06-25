@@ -1,7 +1,7 @@
 import type {Dayjs} from 'dayjs';
 import type {Dispatch, SetStateAction} from 'react';
 
-import type {TDay, TEvent} from './types';
+import type {ConsecutiveDays, TDay, TEvent} from './types';
 
 // Calendar component Interface
 export type IReactFullYearScheduler = {
@@ -102,11 +102,30 @@ export type IReactFullYearScheduler = {
      * The minimum range for the selection.
      */
     minRangeSelection?: number;
-
     /**
      * The first day of the week.
      */
+
     firstDayOfWeek?: 'Sunday' | 'Monday';
+
+    /**
+     * Custom weekend days instead of Saturday/Sunday
+     *
+     * @default
+     * [5, 6]
+     *
+     * @example
+     *  Valid values:
+     * - 0: Monday
+     * - 1: Tuesday
+     * - 2: Wednesday
+     * - 3: Thursday
+     * - 4: Friday
+     * - 5: Saturday
+     * - 6: Sunday
+     */
+    customWeekend?: ConsecutiveDays;
+
     /**
      * The maximum year for the calendar.
      */
@@ -115,6 +134,13 @@ export type IReactFullYearScheduler = {
      * The minimum year for the calendar.
      */
     minYear?: number;
+
+    /**
+     * The default year to load
+     * @default undefined.
+     */
+    defaultYearToLoad?: number;
+
     /**
      * Determines whether the week separator is displayed or not.
      */
@@ -189,9 +215,17 @@ export type IReactFullYearScheduler = {
         clearSecondSelectedCell: () => void,
         clearSelection: () => void
     ) => void;
+    /**
+     * Triggered when a date range selection exceeds or falls below specified limits.
+     *
+     * @param isRangeHigherThanMaxSelection - Indicates if the selected range exceeds the maximum allowed range.
+     * @param isRangeLowerThanMinSelection - Indicates if the selected range falls below the minimum allowed range.
+     */
+    onRangeSelectionError?: (isRangeHigherThanMaxSelection: boolean, isRangeLowerThanMinSelection: boolean) => void;
 };
 
 export type IMonthRowProps = {
+    customWeekend: ConsecutiveDays;
     year: number;
     monthDays: TDay[];
     monthIndex: number;
@@ -246,6 +280,7 @@ export type IReactFullYearSchedulerContext = {
     minRangeSelection?: number;
 
     firstDayOfWeek?: 'Sunday' | 'Monday';
+    customWeekend?: ConsecutiveDays;
     events: TEvent[];
     maxYear?: number;
     minYear?: number;
@@ -282,4 +317,5 @@ export type IReactFullYearSchedulerContext = {
         clearSecondSelectedCell: () => void,
         clearSelection: () => void
     ) => void;
+    onRangeSelectionError?: (isRangeHigherThanMaxSelection: boolean, isRangeLowerThanMinSelection: boolean) => void;
 };
