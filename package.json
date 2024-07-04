@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/sadiki-o/react-full-year-scheduler/issues"
   },
-  "homepage": "https://github.com/sadiki-o/react-full-year-scheduler#readme",
+  "homepage": "https://demo-calendar-pi.vercel.app/",
   "license": "MIT",
   "type": "module",
   "files": [
