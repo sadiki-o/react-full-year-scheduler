@@ -24,6 +24,7 @@ export const dayNamesStartingWithMonday = [
 export const defaultVariables = {
     defaultWeekSeparatorWidth: 10,
     defaultminCellWidth: 40,
+    DefaultYearSwitcherArrowBgColor: '#b39cd0',
     defaultHeaderWeekendBgColor: '#b39cd0',
     defaultHeaderWeekDayBgColor: '#c3b5d5',
     defaultHeaderTextColor: 'white',

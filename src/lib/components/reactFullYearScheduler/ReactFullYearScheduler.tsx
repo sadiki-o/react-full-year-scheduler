@@ -45,6 +45,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     firstDayOfWeek,
     customWeekend,
     events,
+    yearSwitcherArrowBgColor,
     maxYear,
     minYear,
     defaultYearToLoad,
@@ -66,10 +67,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     // each array represents a month with all its corresponding days
     const [monthsWithDates, setMonthsWithDates] = useState<TDay[][]>([]);
     // current year the calendar is displaying
-    const [selectedYear, setSelectedYear] = useState<number>(
-        (defaultYearToLoad && defaultYearToLoad <= maxYear && defaultYearToLoad >= minYear && defaultYearToLoad) ??
-            dayjs().year()
-    );
+    const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
 
     const [firstSelectedCell, setFirstSelectedCell] = useState<Dayjs | undefined>();
     const [secondSelectedCell, setSecondSelectedCell] = useState<Dayjs | undefined>();
@@ -81,6 +79,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     const {
         defaultWeekSeparatorWidth,
         defaultminCellWidth,
+        DefaultYearSwitcherArrowBgColor,
         defaultHeaderWeekendBgColor,
         defaultHeaderWeekDayBgColor,
         defaultHeaderTextColor,
@@ -149,6 +148,19 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
     };
 
     useEffect(() => {
+        if (
+            (defaultYearToLoad && maxYear && minYear && defaultYearToLoad <= maxYear && defaultYearToLoad >= minYear) ??
+            (defaultYearToLoad && maxYear && defaultYearToLoad <= maxYear) ??
+            (defaultYearToLoad && minYear && defaultYearToLoad >= minYear) ??
+            (defaultYearToLoad && defaultYearToLoad <= dayjs().year() + 10 && defaultYearToLoad >= dayjs().year() - 10)
+        ) {
+            setSelectedYear(defaultYearToLoad);
+        } else {
+            setSelectedYear(dayjs().year());
+        }
+    }, [defaultYearToLoad, maxYear, minYear]);
+
+    useEffect(() => {
         setShowCal(false);
         locales[(locale ?? 'en') as keyof typeof locales]().then(module => {
             dayjs.locale({
@@ -210,6 +222,7 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
                 selectionTextColor: selectionTextColor ?? defaultSelectionTextColor,
                 maxRangeSelection,
                 minRangeSelection,
+                yearSwitcherArrowBgColor: yearSwitcherArrowBgColor ?? DefaultYearSwitcherArrowBgColor,
                 minYear,
                 maxYear,
                 showWeekSeparator: showWeekSeparator ?? false,
@@ -228,8 +241,8 @@ export const ReactFullYearScheduler: FC<IReactFullYearScheduler> = memo(function
                 onRangeSelectionError,
             }}>
             <YearSwitcher
-                min={minYear ?? dayjs().year() - 20}
-                max={maxYear ?? dayjs().year()}
+                min={minYear ?? dayjs().year() - 10}
+                max={maxYear ?? dayjs().year() + 10}
                 selectedYear={selectedYear}
                 setSelectedYear={setSelectedYear}
             />

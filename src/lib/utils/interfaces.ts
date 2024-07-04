@@ -72,6 +72,11 @@ export type IReactFullYearScheduler = {
     monthNameTextColor?: string;
 
     /**
+     * The year switcher arrow bg colors.
+     */
+    yearSwitcherArrowBgColor?: string;
+
+    /**
      * Determines whether the calendar is readonly or not.
      */
     readonlyCalendar?: boolean;
@@ -282,6 +287,7 @@ export type IReactFullYearSchedulerContext = {
     firstDayOfWeek?: 'Sunday' | 'Monday';
     customWeekend?: ConsecutiveDays;
     events: TEvent[];
+    yearSwitcherArrowBgColor?: string;
     maxYear?: number;
     minYear?: number;
     showWeekSeparator?: boolean;

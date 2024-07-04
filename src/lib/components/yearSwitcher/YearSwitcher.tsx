@@ -5,7 +5,7 @@ import {CalendarContext} from '@/lib/context/context';
 import type {IYearSwitcher} from '@/lib/utils/interfaces';
 
 const YearSwitcher: FC<IYearSwitcher> = ({min, max, selectedYear, setSelectedYear}) => {
-    const {headerWeekendBgColor} = useContext(CalendarContext)!;
+    const {yearSwitcherArrowBgColor} = useContext(CalendarContext)!;
 
     useEffect(() => {
         const currentYear = document.getElementById(`year-${selectedYear}`);
@@ -24,7 +24,7 @@ const YearSwitcher: FC<IYearSwitcher> = ({min, max, selectedYear, setSelectedYea
                 onClick={() => selectedYear !== min && setSelectedYear(selectedYear - 1)}
                 className="switch-left-button"
                 style={{
-                    backgroundColor: headerWeekendBgColor,
+                    backgroundColor: yearSwitcherArrowBgColor,
                 }}>
                 &lt;&lt;
             </button>
@@ -54,7 +54,7 @@ const YearSwitcher: FC<IYearSwitcher> = ({min, max, selectedYear, setSelectedYea
                 onClick={() => selectedYear !== max && setSelectedYear(selectedYear + 1)}
                 className="switch-right-button"
                 style={{
-                    backgroundColor: headerWeekendBgColor,
+                    backgroundColor: yearSwitcherArrowBgColor,
                 }}>
                 &gt;&gt;
             </button>

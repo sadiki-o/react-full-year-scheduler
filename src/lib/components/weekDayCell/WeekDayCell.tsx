@@ -36,6 +36,13 @@ const WeekDayCell = ({index, dayName, englishDayName}: IWeekDayCellProps) => {
     const firstWeekendDay = DaysEnum[customWeekend![0]];
     const secondWeekendDay = DaysEnum[customWeekend![1]];
 
+    let isWeekend;
+    if (firstDayOfWeek === 'Sunday') {
+        isWeekend = index % 7 === customWeekend![0] + 1 || index % 7 === customWeekend![1] + 1 ? true : false;
+    } else {
+        isWeekend = index % 7 === customWeekend![0] || index % 7 === customWeekend![1] ? true : false;
+    }
+
     const isStartOfWeek =
         firstDayOfWeek &&
         index !== 0 &&
@@ -51,7 +58,7 @@ const WeekDayCell = ({index, dayName, englishDayName}: IWeekDayCellProps) => {
                         borderLeftWidth: weekSeparatorWidth,
                         borderLeftColor: showSeparatorInHeader ? weekSeparatorColor : headerWeekendBgColor,
                     }),
-                ...(englishDayName === firstWeekendDay || englishDayName === secondWeekendDay
+                ...(isWeekend
                     ? {
                           backgroundColor: headerWeekendBgColor,
                       }

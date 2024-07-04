@@ -29,16 +29,18 @@ const App = () => {
             eventTextColor: "white",
         },
     ]);
+    const [year, setYear] = useState(2022)
     return (
         <div className="w-[1400px] mx-auto mt-10">
+            <input type="number" value={year} onChange={e => setYear(Number(e.target.value))}/>
             <ReactFullYearScheduler
                 events={events}
-                locale="fr"
+                locale="ar"
                 dateTooltipTheme="material"
                 weekSeparatorWidth={10}
                 weekSeparatorColor="white"
                 headerWeekDayBgColor="#b39cd0"
-                headerWeekendBgColor="rgba(75, 68, 83, 0.69)"
+                headerWeekendBgColor="black"
                 weekendCellBackgroundColor="rgba(75, 68, 83, 0.69)"
                 weekendCellTextColor="white"
                 weekDayCellBackgroundColor="rgba(75, 68, 83, 0.69)"
@@ -48,10 +50,10 @@ const App = () => {
                 maxRangeSelection={50}
                 minRangeSelection={5}
                 firstDayOfWeek="Monday"
-                customWeekend={[4, 5]}
-                maxYear={2030}
-                minYear={1970}
-                defaultYearToLoad={2023}
+                customWeekend={[5, 6]}
+                // maxYear={2030}
+                // minYear={1970}
+                defaultYearToLoad={year}
                 readonlyCalendar={false}
                 showWeekSeparator={false}
                 showTodayButton={true}
